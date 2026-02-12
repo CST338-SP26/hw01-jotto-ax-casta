@@ -7,6 +7,7 @@ import java.util.ArrayList;
  **/
 
 public class Jotto {
+    private void readWords(){}
     //Static
     private static final int WORD_SIZE = 5;
     private static final boolean DEBUG = true;
@@ -63,14 +64,9 @@ public class Jotto {
     public void setScore(int score) {
         this.score = score;
     }
-}
 
     public boolean isDEBUG() {
         return DEBUG;
-    }
-
-    public void setDEBUG(boolean DEBUG) {
-        this.DEBUG = DEBUG;
     }
 }
 
