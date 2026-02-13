@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * author Alexander Castaneda
@@ -121,7 +122,14 @@ public class Jotto {
             String choice = scan.nextLine().trim().toLowerCase();
             //option 1 : pickword()->guess()
             if(choice.equals("1")||choice.equals("one")){
-
+                if (!pickWord()) {
+                    showPlayerGuesses();
+                }
+                else{
+                    int roundScore = guess();
+                    score += roundScore;
+                    System.out.println("Your score is " + score);
+                }
             }
             //option 2 : showWordList()
             else if(choice.equals("2")||choice.equals("two")){
@@ -133,10 +141,13 @@ public class Jotto {
             }
             //option 4 : showPlayerGuesses()
             else if(choice.equals("4")||choice.equals("four")){
-
+                showPlayerGuesses();
             }
             //quits game
             else if(choice.equals("zz")){
+                //final message
+                System.out.println("Final score: " + score);
+                System.out.println("Thank you for playing");
                 //stops the while loop
                 gameRunning = false;
             }
@@ -145,8 +156,10 @@ public class Jotto {
                 System.out.println("I don't know what \"" + choice + "\" is.");
             }
             //pauses while loop for player input
-            System.out.println("Press enter to continue");
-            scan.nextLine();
+            if(gameRunning) {
+                System.out.println("Press enter to continue");
+                scan.nextLine();
+            }
         }
     }
 
@@ -195,7 +208,7 @@ public class Jotto {
         //checks what the input is
         if (input.equals("y")) {
             System.out.println("Updating word list.");
-            //updateWordList();
+            updateWordList();
             System.out.println(showWordList());
         }
         return playGuesses;
@@ -216,7 +229,7 @@ public class Jotto {
             //prints score
             System.out.println("Current Score: " + score);
             //prompts quit input
-            System.out.print("What is your guess (q to quit):");
+            System.out.print("What is your guess (q to quit): ");
             wordGuess = scan.nextLine().trim().toLowerCase();
 
             //quit
@@ -235,7 +248,7 @@ public class Jotto {
 
             //checks duplicate guesses
             if (currentGuesses.contains(wordGuess)){
-                System.out.println("You already guessed that word.");
+                System.out.println(wordGuess + " has already been entered.");
                 continue;
             }
 
@@ -274,23 +287,22 @@ public class Jotto {
         int count = 0;
         ArrayList<Character> letters = new ArrayList<>();
 
-        //checks if wordGuess is equal to currentWord
         if (wordGuess.equals(currentWord)) {
             return WORD_SIZE;
         }
 
-        //adds each character from currentWord to list
-        for (int i=0;i<currentWord.length();i++){
-            letters.add(currentWord.charAt(i));
+        for (int i = 0; i < currentWord.length(); i++){
+            char c = currentWord.charAt(i);
+            if (!letters.contains(c)){
+                letters.add(c);
+            }
         }
 
-        //checks each character from wordGuess
-        for(int i=0;i<wordGuess.length();i++){
+        for(int i = 0; i < wordGuess.length(); i++){
             char c = wordGuess.charAt(i);
-            //removes duplicate letters
-            if(letters.contains(c)){
-                count++;
+            if (letters.contains(c)) {
                 letters.remove((Character) c);
+                count++;
             }
         }
         return count;
@@ -320,12 +332,54 @@ public class Jotto {
     }
 
     //METHOD PICKWORD
-    //public boolean pickWord(){}
+    public boolean pickWord(){
+        if (wordList.isEmpty()){
+            return false;
+        }
+
+        //when all words have been guessed
+        if(playWords.size() == wordList.size()){
+            System.out.println("You've guessed them all!");
+            return false;
+        }
+
+        //randomizer
+        Random rand = new Random();
+
+        //picks a random word from the list
+        do{
+            int index = rand.nextInt(wordList.size());
+            currentWord = wordList.get(index);
+        }
+        while (playWords.contains(currentWord));
+
+        playWords.add(currentWord);
+
+        //DEBUG SHOW WORD
+        if(DEBUG){
+            System.out.println(currentWord);
+        }
+        return true;
+    }
 
     //METHOD ADDPLAYERGUESS
-    //public boolean addPlayerGuess(String wordGuess){}
+    public boolean addPlayerGuess(String wordGuess){
+        if(!playGuesses.contains(wordGuess)){
+            playGuesses.add(wordGuess);
+            return true;
+        }
+        return false;
+    }
 
     //METHOD PLAYERGUESSSCORES
-    //public void playerGuessScores(ArrayList<String> guesses){}
+    public void playerGuessScores(ArrayList<String> guesses){
+        System.out.println("Guess\t\tScore");
+
+        for(String g : guesses){
+            int s = getLetterCount(g);
+            System.out.println(g + "\t\t" + s);
+        }
+        System.out.println();
+    }
 }
 
