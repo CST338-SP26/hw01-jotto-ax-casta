@@ -10,6 +10,7 @@ import java.util.Random;
  * author Alexander Castaneda
  * version 0.1.0
  * Since 1/29/26
+ * Program that simulates a game of Jotto with a list of words and player input
  **/
 
 public class Jotto {
@@ -32,6 +33,42 @@ public class Jotto {
     public Jotto(String filename) {
         this.filename = filename;
         readWords();
+    }
+
+    public Scanner getScan() {
+        return scan;
+    }
+
+    public String getCurrentWord() {
+        return currentWord;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public ArrayList<String> getWordList() {
+        return wordList;
+    }
+
+    public ArrayList<String> getPlayGuesses() {
+        return playGuesses;
+    }
+
+    public ArrayList<String> getPlayedWords() {
+        return playWords;
+    }
+
+    public void setCurrentWord(String currentWord) {
+        this.currentWord = currentWord;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     //METHOD READWORDS
