@@ -1,13 +1,15 @@
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
- * @author Alexander Castaneda
- * @version 0.1.0
- * @Since 1/29/26
+ * author Alexander Castaneda
+ * version 0.1.0
+ * Since 1/29/26
  **/
 
 public class Jotto {
-    private void readWords(){}
     //Static
     private static final int WORD_SIZE = 5;
     private static final boolean DEBUG = true;
@@ -67,6 +69,36 @@ public class Jotto {
 
     public boolean isDEBUG() {
         return DEBUG;
+    }
+    public ArrayList<String> readWords(){
+        wordList.clear();
+        //opens and scans file
+        try {
+            File file = new File(filename);
+            Scanner scan = new Scanner(file);
+
+            //scans the file
+            while (scan.hasNextLine()){
+                String word = scan.nextLine();
+                //checks for duplicates
+                if(!wordList.contains(word)){
+                    wordList.add(word);
+                }
+            }
+            scan.close();
+        }
+        //catches error
+        catch (FileNotFoundException e){
+            System.out.println("Couldn't open " + filename);
+            return wordList;
+        }
+        return wordList;
+    }
+    public void play(){
+
+    }
+    public int guess() {
+        return 0;
     }
 }
 
