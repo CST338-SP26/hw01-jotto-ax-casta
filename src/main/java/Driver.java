@@ -28,6 +28,6 @@ public class Driver {
 
         System.out.println(game.readWords());
         System.out.println(game.readWords());
-        game.updateWordList();
+        //game.updateWordList();
     }
 }

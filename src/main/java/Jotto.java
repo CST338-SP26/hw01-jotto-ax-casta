@@ -53,7 +53,6 @@ public class Jotto {
     public ArrayList<String> getPlayWords() {
         return playWords;
     }
-
     //SETTERS
     public void setCurrentWord(String currentWord) {
         this.currentWord = currentWord;
@@ -102,9 +101,10 @@ public class Jotto {
         //scanner to read user input
         Scanner scan = new Scanner(System.in);
 
-        //prints menu
+        //handles the game menu and player inputs
         boolean gameRunning = true;
         while(gameRunning){
+            //prints menu
             System.out.println("=-=-=-=-=-=-=-=-=-=-=");
             System.out.println("Choose one of the following:");
             System.out.println("1:\t Start the game");
@@ -123,11 +123,11 @@ public class Jotto {
             }
             //option 2 : showWordList()
             else if(choice.equals("2")||choice.equals("two")){
-
+                System.out.println(showWordList());
             }
             //option 3 : showPlayedWords()
             else if(choice.equals("3")||choice.equals("three")){
-
+                System.out.println(showPlayedWords());
             }
             //option 4 : showPlayerGuesses()
             else if(choice.equals("4")||choice.equals("four")){
@@ -147,8 +147,74 @@ public class Jotto {
             scan.nextLine();
         }
     }
-    public int guess() {
-        return 0;
+
+    //METHOD SHOWPLAYEDWORDS
+    public String showPlayedWords(){
+        //checks if playWords is empty
+        if (playWords.isEmpty()) {
+            return "No words have been played";
+        }
+        String playWordsString = "Current list of played words:\n";
+        //returns list of played words
+        for (String word:playWords){
+            playWordsString += word + "\n";
+        }
+        return playWordsString;
     }
+
+    //METHOD SHOWWORDLIST
+    public String showWordList(){
+        //returns list of words
+        String showWordsString = "Current word list:\n";
+        for (String word:wordList){
+            showWordsString += word + "\n";
+        }
+        return showWordsString;
+    }
+
+    //METHOD SHOWPLAYERGUESSES
+    public ArrayList<String> showPlayerGuesses() {
+        //checks if playGuesses is empty
+        if (playGuesses.isEmpty()) {
+            System.out.println("No guesses yet");
+        }
+        //prints current player guesses
+        else {
+            System.out.println("Current player guesses:");
+            for (String word : playGuesses) {
+                System.out.println(word);
+            }
+        }
+        //checks for input
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Would you like to add the words to the word list? (y/n)");
+        String input = scan.nextLine().trim().toLowerCase();
+
+        //checks what the input is
+        if (input.equals("y")) {
+            System.out.println("Updating word list.");
+            //updateWordList();
+            System.out.println(showWordList());
+        }
+        return playGuesses;
+    }
+
+    //METHOD PICKWORD
+    //public boolean pickWord(){}
+
+    //METHOD GUESS
+    //public int guess() {}
+
+    //METHOD GETLETTERCOUNT
+    //public int getLetterCount(String wordGuess){}
+
+    //METHOD ADDPLAYERGUESS
+    //public boolean addPlayerGuess(String wordGuess){}
+
+    //METHOD PLAYERGUESSSCORES
+    //public void playerGuessScores(ArrayList<String> guesses){}
+
+    //METHOD UPDATEWORDLIST()
+    //public void updateWordList(){}
 }
 
