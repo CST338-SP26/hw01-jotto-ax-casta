@@ -20,7 +20,7 @@ public class Jotto {
     private static final boolean DEBUG = true;
     //Strings
     private String currentWord;
-    private String filename;
+    private final String filename;
     //int
     private int score;
     //ArrayList
@@ -32,47 +32,6 @@ public class Jotto {
     public Jotto(String filename) {
         this.filename = filename;
         readWords();
-    }
-
-    //GETTERS
-    public String getCurrentWord() {
-        return currentWord;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public ArrayList<String> getWordList() {
-        return wordList;
-    }
-
-    public ArrayList<String> getPlayGuesses() {
-        return playGuesses;
-    }
-
-    public ArrayList<String> getPlayWords() {
-        return playWords;
-    }
-    //SETTERS
-    public void setCurrentWord(String currentWord) {
-        this.currentWord = currentWord;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public boolean isDEBUG() {
-        return DEBUG;
     }
 
     //METHOD READWORDS
@@ -217,13 +176,11 @@ public class Jotto {
     public int guess() {
         ArrayList<String> currentGuesses = new ArrayList<>();
 
-        int letterCount = 0;
+        int letterCount;
         int score = WORD_SIZE + 1;
         String wordGuess;
 
-        boolean guessing = true;
-
-        while(guessing){
+        while(true){
             //prints score
             System.out.println("Current Score: " + score);
             //prompts quit input
@@ -235,7 +192,7 @@ public class Jotto {
                 if(score > 0){
                     score = 0;
                 }
-                break;
+                    break;
             }
 
             //checks word length
