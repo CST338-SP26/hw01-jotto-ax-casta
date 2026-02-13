@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * author Alexander Castaneda
@@ -199,22 +201,131 @@ public class Jotto {
         return playGuesses;
     }
 
-    //METHOD PICKWORD
-    //public boolean pickWord(){}
-
     //METHOD GUESS
-    //public int guess() {}
+    public int guess() {
+        ArrayList<String> currentGuesses = new ArrayList<>();
+        Scanner scan = new Scanner(System.in);
+
+        int letterCount = 0;
+        int score = WORD_SIZE + 1;
+        String wordGuess;
+
+        boolean guessing = true;
+
+        while(guessing){
+            //prints score
+            System.out.println("Current Score: " + score);
+            //prompts quit input
+            System.out.print("What is your guess (q to quit):");
+            wordGuess = scan.nextLine().trim().toLowerCase();
+
+            //quit
+            if(wordGuess.equals("q")){
+                if(score > 0){
+                    score = 0;
+                }
+                break;
+            }
+
+            //checks word length
+            if(wordGuess.length() != WORD_SIZE){
+                System.out.println("Word must be 5 characters (" + wordGuess + " is " + wordGuess.length() + ")");
+                continue;
+            }
+
+            //checks duplicate guesses
+            if (currentGuesses.contains(wordGuess)){
+                System.out.println("You already guessed that word.");
+                continue;
+            }
+
+            //adds guess to player guesses
+            addPlayerGuess(wordGuess);
+            currentGuesses.add(wordGuess);
+
+            //checks for the correct word
+            if(wordGuess.equals(currentWord)){
+                System.out.println("DINGDINGDING!!! the word was " + currentWord);
+                playerGuessScores(currentGuesses);
+                return score;
+            }
+
+            //determines letter count
+            letterCount = getLetterCount(wordGuess);
+
+            //all letters are correct
+            if(letterCount == WORD_SIZE){
+                System.out.println("That word is an anagram!");
+            }
+            //how many correct letters
+            else{
+                System.out.println(wordGuess + " has a Jotto score of " + letterCount);
+            }
+            //counts down score
+            score--;
+
+            playerGuessScores(currentGuesses);
+        }
+        return score;
+    }
 
     //METHOD GETLETTERCOUNT
-    //public int getLetterCount(String wordGuess){}
+    public int getLetterCount(String wordGuess){
+        int count = 0;
+        ArrayList<Character> letters = new ArrayList<>();
+
+        //checks if wordGuess is equal to currentWord
+        if (wordGuess.equals(currentWord)) {
+            return WORD_SIZE;
+        }
+
+        //adds each character from currentWord to list
+        for (int i=0;i<currentWord.length();i++){
+            letters.add(currentWord.charAt(i));
+        }
+
+        //checks each character from wordGuess
+        for(int i=0;i<wordGuess.length();i++){
+            char c = wordGuess.charAt(i);
+            //removes duplicate letters
+            if(letters.contains(c)){
+                count++;
+                letters.remove((Character) c);
+            }
+        }
+        return count;
+    }
+
+    //METHOD UPDATEWORDLIST()
+    public void updateWordList(){
+        try{
+            FileWriter writer = new FileWriter(filename);
+
+            //adds guesses into wordList
+            for (String guess : playGuesses){
+                if(!wordList.contains(guess)){
+                    wordList.add(guess);
+                }
+            }
+
+            //writes back to file
+            for (String word : wordList){
+                writer.write(word + "\n");
+            }
+            writer.close();
+        }
+        catch (IOException e){
+            System.out.println("Error writing to file.");
+        }
+    }
+
+    //METHOD PICKWORD
+    //public boolean pickWord(){}
 
     //METHOD ADDPLAYERGUESS
     //public boolean addPlayerGuess(String wordGuess){}
 
     //METHOD PLAYERGUESSSCORES
     //public void playerGuessScores(ArrayList<String> guesses){}
-
-    //METHOD UPDATEWORDLIST()
-    //public void updateWordList(){}
 }
 
