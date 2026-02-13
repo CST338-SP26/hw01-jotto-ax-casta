@@ -13,6 +13,8 @@ import java.util.Random;
  **/
 
 public class Jotto {
+    //Scanner
+    private final Scanner scan = new Scanner(System.in);
     //Static
     private static final int WORD_SIZE = 5;
     private static final boolean DEBUG = true;
@@ -101,8 +103,6 @@ public class Jotto {
 
     //METHOD PLAY
     public void play(){
-        //scanner to read user input
-        Scanner scan = new Scanner(System.in);
 
         //handles the game menu and player inputs
         boolean gameRunning = true;
@@ -201,7 +201,6 @@ public class Jotto {
             }
         }
         //checks for input
-        Scanner scan = new Scanner(System.in);
         System.out.println("Would you like to add the words to the word list? (y/n)");
         String input = scan.nextLine().trim().toLowerCase();
 
@@ -217,7 +216,6 @@ public class Jotto {
     //METHOD GUESS
     public int guess() {
         ArrayList<String> currentGuesses = new ArrayList<>();
-        Scanner scan = new Scanner(System.in);
 
         int letterCount = 0;
         int score = WORD_SIZE + 1;
